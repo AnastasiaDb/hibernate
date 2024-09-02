@@ -1,6 +1,7 @@
 package org.example.part2;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 
@@ -8,11 +9,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class Customer extends AbstractBaseEntity {
-    private Set<Goods> goods = new HashSet<>();
-    private String name;
+public class Customer extends JoinedBaseEntity {
+
+    public Customer() {
+    }
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    private Set<Goods> goods = new HashSet<>();
+
     public Set<Goods> getGoods() {
         return goods;
     }
@@ -21,11 +25,5 @@ public class Customer extends AbstractBaseEntity {
         this.goods = goods;
     }
 
-    public String getName() {
-        return name;
-    }
 
-    public void setName(String name) {
-        this.name = name;
-    }
 }

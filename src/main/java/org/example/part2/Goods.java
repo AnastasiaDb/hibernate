@@ -5,9 +5,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class Goods extends AbstractBaseEntity {
+public class Goods extends JoinedBaseEntity {
+
+    public Goods() {
+    }
+
     private double price;
-    private String name;
+
     @ManyToOne(cascade = CascadeType.ALL)
     private Customer customer;
 
@@ -27,11 +31,4 @@ public class Goods extends AbstractBaseEntity {
         this.price = price;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }

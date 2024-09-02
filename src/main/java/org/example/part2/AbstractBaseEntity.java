@@ -1,12 +1,11 @@
 package org.example.part2;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.*;
+
+import javax.naming.Name;
 
 @MappedSuperclass
-public abstract class AbstractBaseEntity {
+ abstract class AbstractBaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -17,5 +16,21 @@ public abstract class AbstractBaseEntity {
 
     public void setId(Long id) {
         this.id = id;
+    }
+}
+
+@Entity
+@Table(name = "CustomerAndGoods")
+@Inheritance(strategy = InheritanceType.JOINED)
+abstract class JoinedBaseEntity extends AbstractBaseEntity{
+
+    private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
