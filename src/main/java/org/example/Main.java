@@ -2,6 +2,7 @@ package org.example;
 
 import org.example.part1.Order;
 import org.example.part1.Product;
+import org.example.part1.Profile;
 import org.example.part1.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -13,31 +14,39 @@ import java.util.Set;
 
 public class Main {
     public static void main(String[] args) {
+        part1();
+    }
+
+    public static void part1() {
         Configuration configuration = new Configuration();
-        configuration.configure("hibernate.cfg.xml");
+        configuration.configure("hibernate.cfg.xml").
+                addAnnotatedClass(Order.class).
+                addAnnotatedClass(Product.class).
+                addAnnotatedClass(Profile.class).
+                addAnnotatedClass(User.class);
         SessionFactory sessionFactory = configuration.buildSessionFactory();
 
         Session session = sessionFactory.openSession();
 
         session.beginTransaction();
 
-        User user = new User();
-        user.setName("mya");
-
-        Product product = new Product();
-        product.setPrice(1.56);
-
-        Order order = new Order();
-        Set<Product> products = new HashSet<>();
-        products.add(product);
-        order.setProducts(products);
-
-        order.setUser(user);
-        order.setProducts(products);
-
-        user.getOrders().add(order);
-
-        session.persist(user);
+//        User user = new User();
+//        user.setName("mya");
+//
+//        Product product = new Product();
+//        product.setPrice(1.56);
+//
+//        Order order = new Order();
+//        Set<Product> products = new HashSet<>();
+//        products.add(product);
+//        order.setProducts(products);
+//
+//        order.setUser(user);
+//        order.setProducts(products);
+//
+//        user.getOrders().add(order);
+//
+//        session.persist(user);
         session.getTransaction().commit();
 
         session.close();
