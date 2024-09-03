@@ -56,15 +56,13 @@ public class Main {
 //
 //        session.persist(customer1);
 
-   //          Полиморфный запрос для получения всех сущностей типа SingleBaseEntity
+//          Полиморфный запрос для получения всех сущностей типа SingleBaseEntity
             List<AbstractBaseEntity> entities = session.createQuery("FROM org.example.part2.AbstractBaseEntity", AbstractBaseEntity.class).getResultList();
 
             for (AbstractBaseEntity entity : entities) {
-                if (entity instanceof Customer) {
-                    Customer customer = (Customer) entity;
+                if (entity instanceof Customer customer) {
                     System.out.println("Customer: " + customer.getName());
-                } else if (entity instanceof Goods) {
-                    Goods goods = (Goods) entity;
+                } else if (entity instanceof Goods goods) {
                     System.out.println("Goods: " + goods.getName() + ", Price: " + goods.getPrice());
                 }
             }
