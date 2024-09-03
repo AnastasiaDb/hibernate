@@ -5,7 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class Goods extends JoinedBaseEntity {
+public class Goods extends AbstractBaseEntity {
 
     public Goods() {
     }
