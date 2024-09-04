@@ -66,7 +66,8 @@ public class Main {
             session.close();
 
             Session newSession = sessionFactory.openSession();
-            List<Customers> persistentCustomer = newSession.createQuery("FROM Customers", Customers.class)
+            List<Customers> persistentCustomer = newSession.createQuery(
+                    "SELECT c FROM Customers c JOIN FETCH c.goods", Customers.class)
                     .getResultList();
 
             //newSession.close();
