@@ -14,7 +14,7 @@ public class Customers {
 
     private String name;
 
-    @OneToMany(mappedBy = "customers", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "customers", cascade = CascadeType.ALL)
     private Set<Good> goods = new HashSet<>();
 
     public Customers() {

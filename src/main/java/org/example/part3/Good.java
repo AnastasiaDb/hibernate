@@ -10,7 +10,7 @@ public class Good {
     private Long id;
     private String name;
     private double price;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Customers customers;
 
     public Good() {

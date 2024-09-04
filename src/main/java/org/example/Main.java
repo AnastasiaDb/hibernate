@@ -31,44 +31,58 @@ public class Main {
         configuration.configure("hibernate.cfg.xml").
                 addAnnotatedClass(Customers.class).
                 addAnnotatedClass(Good.class);
-
-        SessionFactory sessionFactory = configuration.buildSessionFactory();
-        Session session = sessionFactory.openSession();
-        session.beginTransaction();
-
-
-        Customers customers = new Customers();
-        customers.setName("Nastya");
-
-        Good good1 = new Good();
-        good1.setPrice(3.14);
-        good1.setName("tomato");
-
-        Good good2 = new Good();
-        good2.setPrice(2.2);
-        good2.setName("cola");
-
-        Set<Good> goods = new HashSet<>();
-        goods.add(good1);
-        goods.add(good2);
-
-        customers.setGoods(goods);
-
-        session.persist(customers);
-        session.getTransaction().commit();
-        session.close();
-
-        Session newSession = sessionFactory.openSession();
-        Customers persistentCustomer = newSession.get(Customers.class, customers.getId());
-        newSession.close();
-
         try {
-            Set<Good> getGoods = persistentCustomer.getGoods();
-            for (Good good : getGoods) {
-                System.out.println("Name: " + good.getName() + ", Price: " + good.getPrice());
+
+            SessionFactory sessionFactory = configuration.buildSessionFactory();
+            Session session = sessionFactory.openSession();
+            session.beginTransaction();
+
+
+            Customers customers = new Customers();
+            customers.setName("Nastya");
+
+            Good good1 = new Good();
+            good1.setPrice(3.14);
+            good1.setName("tomato");
+
+            Good good2 = new Good();
+            good2.setPrice(2.2);
+            good2.setName("cola");
+
+            Set<Good> goods = new HashSet<>();
+            good1.setCustomers(customers);
+            good2.setCustomers(customers);
+            goods.add(good1);
+            goods.add(good2);
+
+            customers.setGoods(goods);
+
+            session.persist(customers);
+            session.persist(good1);
+            session.persist(good2);
+            session.getTransaction().commit();
+            //    System.out.println(session.find(Customers.class, customers.getId()));
+            //     System.out.println("Saved customer ID: " + customers.getId());
+            session.close();
+
+            Session newSession = sessionFactory.openSession();
+            Customers persistentCustomer = newSession.createQuery(
+                            "SELECT c FROM Customers c JOIN FETCH c.goods WHERE c.id = :id", Customers.class)
+                    .setParameter("id", customers.getId())
+                    .getSingleResult();
+
+            newSession.close();
+
+            try {
+                Set<Good> getGoods = persistentCustomer.getGoods();
+                for (Good good : getGoods) {
+                    System.out.println("Name: " + good.getName() + ", Price: " + good.getPrice());
+                }
+            } catch (Exception e) {
+                System.out.println("LazyInitializationException occurred!");
+                e.printStackTrace();
             }
         } catch (Exception e) {
-            System.out.println("LazyInitializationException occurred!");
             e.printStackTrace();
         }
 
